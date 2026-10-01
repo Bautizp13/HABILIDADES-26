@@ -54,7 +54,7 @@ button.p{background:var(--acc);color:#fff;border-color:var(--acc)}
 
 <script src="cards.js"></script>
 <script>
-if (typeof CARDS === "undefined") { var CARDS = []; }
+const LIST = (typeof CARDS !== "undefined") ? CARDS : [];
 
 const $ = id => document.getElementById(id);
 const KEY = "comsalud_v1";
@@ -65,11 +65,11 @@ const id = c => c.cat + "|" + c.t;
 
 let deck = [], i = 0;
 
-const cats = ["Todas las categorías", ...new Set(CARDS.map(c => c.cat))];
+const cats = ["Todas las categorías", ...new Set(LIST.map(c => c.cat))];
 $("cat").innerHTML = cats.map((c, n) => `<option value="${n ? c : ""}">${c}</option>`).join("");
 
 function build(shuffle) {
-  deck = CARDS.filter(c => (!$("cat").value || c.cat === $("cat").value) &&
+  deck = LIST.filter(c => (!$("cat").value || c.cat === $("cat").value) &&
     ($("filt").value === "all" || state[id(c)] !== "ok"));
   if (shuffle) deck.sort(() => Math.random() - .5);
   i = 0; render();
@@ -78,7 +78,7 @@ function build(shuffle) {
 function render() {
   const c = $("card"); c.classList.remove("flip");
   if (!deck.length) {
-    $("ft").textContent = CARDS.length ? "No hay tarjetas en este filtro." : "Todavía no hay tarjetas. Cargalas en cards.js."; $("bt").innerHTML = "";
+    $("ft").textContent = LIST.length ? "No hay tarjetas en este filtro." : "Todavía no hay tarjetas. Cargalas en cards.js."; $("bt").innerHTML = "";
     $("tf").textContent = ""; $("tb").textContent = ""; $("stat").textContent = ""; return;
   }
   const k = deck[i], termFirst = $("mode").value === "t";
@@ -87,8 +87,8 @@ function render() {
   $("bt").innerHTML = termFirst ? desc : term;
   $("tf").textContent = termFirst ? "Término" : "Descripción";
   $("tb").textContent = termFirst ? "Descripción" : "Término";
-  const known = CARDS.filter(x => state[id(x)] === "ok").length;
-  $("stat").textContent = `Tarjeta ${i + 1} de ${deck.length} · Sabidas: ${known}/${CARDS.length}`;
+  const known = LIST.filter(x => state[id(x)] === "ok").length;
+  $("stat").textContent = `Tarjeta ${i + 1} de ${deck.length} · Sabidas: ${known}/${LIST.length}`;
 }
 
 const go = d => { if (deck.length) { i = (i + d + deck.length) % deck.length; render(); } };
