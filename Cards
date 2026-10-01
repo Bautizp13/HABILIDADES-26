@@ -1,0 +1,5 @@
+// TARJETAS DE ESTUDIO
+// Reemplazá todo este archivo por el código que genere el prompt.
+// Formato: {cat:"Categoría", d:"Descripción, signos o síntomas", t:"Término"}
+const CARDS = [
+];
